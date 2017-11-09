@@ -7,7 +7,7 @@ import demo from '../schemas/demo';
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('graphql.ejs');
 });
 
 router.post('/', (req, res) => {
