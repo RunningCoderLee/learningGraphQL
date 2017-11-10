@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 import { graphql } from 'graphql';
-import demo from '../schemas/demo';
+import query from '../schemas/query';
+import mutation from '../schemas/mutation';
+import goods from '../schemas/goods';
 
 
 
@@ -12,9 +14,25 @@ router.get('/', function(req, res, next) {
 
 router.post('/', (req, res) => {
   //GraphQL executor
-  graphql(demo, req.body)
+  graphql(query, req.body)
   .then((result) => {
-    res.send(JSON.stringify(result, null, 2));
+    res.send(result);
+  })
+});
+
+router.post('/mutation', (req, res) => {
+  //GraphQL executor
+  graphql(mutation, req.body)
+  .then((result) => {
+    res.send(result);
+  })
+});
+
+router.post('/goodsItem', (req, res) => {
+  //GraphQL executor
+  graphql(goods, req.body)
+  .then((result) => {
+    res.send(result);
   })
 });
 

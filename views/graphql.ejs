@@ -6,31 +6,167 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>GraphQL</title>
   <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <style>
+    body {
+      font-size: 20px;
+    }
+
+    button {
+      font-size: 20px;
+    }
+
+    #info {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+    }
+
+    #request, #response {
+      flex: 1
+    }
+  </style>
 </head>
 <body>
   <div class="action-bar">
     <button id="demo">Demo</button>
+    <button id="schema">schema</button>
+    <button id="mutation">Mutation</button>
+    <button id="goodsItem">goodsItem</button>
+    <button id="demo">Demo</button>
+    <button id="demo">Demo</button>
   </div>
-  <pre>
-    <code id="code">
-
-    </code>
-  </pre>
+  <div id="info">
+    <div class="request">
+      <h3>Request:</h3>
+      <pre><code>111</code></pre>
+    </div>
+    <div class="response">
+      <h3>Response:</h3>
+      <pre><code>222</code></pre>
+    </div>
+  </div>
+  <pre><code id="code"></code></pre>
 
 <script>
   $(function () {
-    $('#demo').on('click', function () {
-      $.ajax({
-        type: "POST",
-        url: "/graphql",
-        contentType: 'application/graphql',
-        data: '{__schema { queryType { name, fields { name, description} }}}',
-        success: function (response) {
-          console.log(response)
-        }
-      });
-    });
+    $('#demo').on('click', handleDemoClick)
+    $('#schema').on('click', handleSchemaClick)
+    $('#mutation').on('click', handleMutationClick)
+    $('#goodsItem').on('click', handleGoodsItemClick)
   });
+
+
+function handleDemoClick() {
+  let request = 
+`$.ajax({
+  type: "POST",
+  url: "/graphql",
+  contentType: 'application/graphql',
+  data: 'query RootQueryType { count }',
+  success: function (response) {
+    updateResponse(response)
+  }
+});`
+
+  updateRequest(request)
+
+
+  $.ajax({
+    type: "POST",
+    url: "/graphql",
+    contentType: 'application/graphql',
+    data: 'query RootQueryType { count }',
+    success: function (response) {
+      updateResponse(response)
+    }
+  });
+}
+
+function handleSchemaClick() {
+  let request = 
+`$.ajax({
+  type: "POST",
+  url: "/graphql",
+  contentType: 'application/graphql',
+  data: '{__schema { queryType { name, fields { name, description} }}}',
+  success: function (response) {
+    updateResponse(response)
+  }
+});`
+
+  updateRequest(request)
+
+
+  $.ajax({
+    type: "POST",
+    url: "/graphql",
+    contentType: 'application/graphql',
+    data: '{__schema { queryType { name, fields { name, description} }}}',
+    success: function (response) {
+      updateResponse(response)
+    }
+  });
+}
+
+function handleMutationClick() {
+  let request = 
+`$.ajax({
+  type: "POST",
+  url: "/graphql/mutation",
+  contentType: 'application/graphql',
+  data: 'mutation RootMutationType { updateCount }',
+  success: function (response) {
+    updateResponse(response)
+  }
+});`
+
+  updateRequest(request)
+
+
+  $.ajax({
+    type: "POST",
+    url: "/graphql/mutation",
+    contentType: 'application/graphql',
+    data: 'mutation RootMutationType { updateCount }',
+    success: function (response) {
+      updateResponse(response)
+    }
+  });
+}
+
+function handleGoodsItemClick() {
+  let request = 
+`$.ajax({
+  type: "POST",
+  url: "/graphql/goodsItem",
+  contentType: 'application/graphql',
+  data: 'query ItemQuery(id: '1') { id title price pic }',
+  success: function (response) {
+    updateResponse(response)
+  }
+});`
+
+  updateRequest(request)
+
+
+  $.ajax({
+    type: "POST",
+    url: "/graphql/goodsItem",
+    contentType: 'application/graphql',
+    data: 'query ItemQuery { item(id: "1") { title }}',
+    success: function (response) {
+      updateResponse(response)
+    }
+  });
+}
+
+function updateResponse(code) {
+ $('.response code').text(JSON.stringify(code, null, 2));
+}
+
+function updateRequest(content) {
+  $('.request code').text(content); 
+}
 </script>
 </body>
 </html>
